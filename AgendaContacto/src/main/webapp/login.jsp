@@ -11,12 +11,54 @@
     <meta charset="UTF-8">
     <title>Iniciar Sesión - Agenda</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        @keyframes gradientFlow {
+            0% { 
+                background-position: 0% 0%;
+                background: linear-gradient(45deg, #001a4d 0%, #003d99 25%, #0066cc 50%, #004d99 75%, #001a4d 100%);
+            }
+            25% { 
+                background-position: 100% 100%;
+                background: linear-gradient(225deg, #003d99 0%, #0066cc 25%, #00a3e0 50%, #0088bb 75%, #003d99 100%);
+            }
+            50% { 
+                background-position: 0% 100%;
+                background: linear-gradient(135deg, #0066cc 0%, #00a3e0 25%, #006666 50%, #004d4d 75%, #0066cc 100%);
+            }
+            75% { 
+                background-position: 100% 0%;
+                background: linear-gradient(315deg, #00a3e0 0%, #006666 25%, #2d004d 50%, #1a0033 75%, #00a3e0 100%);
+            }
+            100% { 
+                background-position: 0% 0%;
+                background: linear-gradient(45deg, #001a4d 0%, #003d99 25%, #0066cc 50%, #004d99 75%, #001a4d 100%);
+            }
+        }
+
+        body {
+            animation: gradientFlow 40s ease-in-out infinite;
+            background-size: 200% 200%;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 </head>
-<body class="bg-light d-flex justify-content-center align-items-center" style="height: 100vh;">
+<body class="d-flex justify-content-center align-items-center">
 
 <%
-    // Lógica del Login
+    // Lógica del Login y Logout
     String mensajeError = "";
+    
+    // Invalidar sesión si se cierra sesión
+    String logout = request.getParameter("logout");
+    if ("true".equals(logout)) {
+        session.invalidate();
+        response.sendRedirect("login.jsp");
+        return;
+    }
+    
     if ("POST".equalsIgnoreCase(request.getMethod())) {
         String usuario = request.getParameter("user");
         String pass = request.getParameter("pass");
