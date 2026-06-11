@@ -5,56 +5,52 @@
   Time: 19:12
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <html>
 <head>
-    <meta charset="UTF-8">
-    <title>Iniciar Sesión - Agenda</title>
+    <title>Login | ContactApp</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            height: 100vh; display: flex; align-items: center; justify-content: center; margin: 0;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px; padding: 40px; width: 400px; color: white;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+        }
+        .btn-login {
+            background: #00d2ff; background: linear-gradient(to right, #3a7bd5, #00d2ff);
+            border: none; color: white; font-weight: 500; transition: 0.3s;
+        }
+        .btn-login:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(0, 210, 255, 0.4); }
+        .form-control { background: rgba(255, 255, 255, 0.1); border: 1px solid rgba(255, 255, 255, 0.3); color: white; }
+        .form-control::placeholder { color: rgba(255, 255, 255, 0.6); }
+        .form-control:focus { background: rgba(255, 255, 255, 0.2); color: white; border-color: #00d2ff; }
+    </style>
 </head>
-<body class="bg-light d-flex justify-content-center align-items-center" style="height: 100vh;">
-
-<%
-    // Lógica del Login
-    String mensajeError = "";
-    if ("POST".equalsIgnoreCase(request.getMethod())) {
-        String usuario = request.getParameter("user");
-        String pass = request.getParameter("pass");
-
-        // Validamos credenciales
-        if ("admin".equals(usuario) && "1234".equals(pass)) {
+<body>
+<div class="glass-card text-center">
+    <h2 class="mb-4 fw-bold">ContactApp</h2>
+    <p class="mb-4 small">Organiza tu red de contactos profesional</p>
+    <form method="POST">
+        <input type="text" name="user" class="form-control mb-3" placeholder="Usuario" required>
+        <input type="password" name="pass" class="form-control mb-4" placeholder="Contraseña" required>
+        <button type="submit" class="btn btn-login w-100 py-2">INGRESAR</button>
+    </form>
+    <% if ("POST".equalsIgnoreCase(request.getMethod())) {
+        if ("admin".equals(request.getParameter("user")) && "1234".equals(request.getParameter("pass"))) {
             session.setAttribute("logueado", true);
             response.sendRedirect("index.jsp");
-            return; // Detenemos la ejecución para redirigir
-        } else {
-            mensajeError = "Usuario o contraseña incorrectos.";
-        }
-    }
-%>
-
-<div class="card shadow p-4" style="width: 350px;">
-    <h3 class="text-center mb-4">Agenda Contactos</h3>
-
-    <form method="POST">
-        <div class="mb-3">
-            <label class="form-label">Usuario</label>
-            <input type="text" name="user" class="form-control" placeholder="admin" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Contraseña</label>
-            <input type="password" name="pass" class="form-control" placeholder="****" required>
-        </div>
-
-        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-
-        <%-- Mostramos el error si existe --%>
-        <% if (!mensajeError.isEmpty()) { %>
-        <div class="alert alert-danger mt-3 p-2 text-center" role="alert">
-            <%= mensajeError %>
-        </div>
-        <% } %>
-    </form>
+            return;
+        } else { %>
+    <div class="mt-3 text-warning small">Credenciales incorrectas. Intente nuevamente.</div>
+    <% }} %>
 </div>
-
 </body>
 </html>
